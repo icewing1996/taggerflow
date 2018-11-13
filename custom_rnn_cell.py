@@ -25,7 +25,7 @@ class DyerLSTMCell(tf.nn.rnn_cell.RNNCell):
   def __call__(self, inputs, state, scope=None):
     """Long short-term memory cell (LSTM)."""
     with tf.variable_scope(scope or type(self).__name__):  # "DyerLSTMCell"
-      h, c = tf.split(1, 2, state)
+      h, c = tf.split(state, 2, 1)
 
       input_gate = tf.sigmoid(tf.nn.rnn_cell._linear([inputs, h, c], self._num_units, bias=True, bias_start=0.25, scope="input_gate"))
       new_input = tf.tanh(tf.nn.rnn_cell._linear([inputs, h], self._num_units, bias=True, scope="new_input"))

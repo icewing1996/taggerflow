@@ -58,7 +58,7 @@ class SupertaggerModel(object):
                 cell = first_cell
 
             outputs, _ = tf.nn.bidirectional_dynamic_rnn(cell, cell, concat_embedding, sequence_length=self.num_tokens, dtype=tf.float32)
-            outputs = tf.concat(2, outputs)
+            outputs = tf.concat(outputs, 2)
         with tf.name_scope("softmax"):
             # From LSTM outputs to logits.
             flattened = self.flatten(outputs)
