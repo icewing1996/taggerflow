@@ -21,7 +21,7 @@ def get_pretrained_parameters(params_file):
 
 def get_default_parameters(sentences):
     parameters = Parameters([("words",    TurianEmbeddingSpace(maybe_download("data",
-                                                                              "http://appositive.cs.washington.edu/resources/",
+                                                                              "http://lsz-gpu-01.cs.washington.edu/resources/",
                                                                               "embeddings.raw"))),
                              ("prefix_1", EmpiricalPrefixSpace(1, sentences)),
                              ("prefix_2", EmpiricalPrefixSpace(2, sentences)),
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     with LoggingToFile(exp_logdir, "init.log"):
         supertag_space = SupertagSpace(maybe_download("data",
-                                                      "http://appositive.cs.washington.edu/resources/",
+                                                      "http://lsz-gpu-01.cs.washington.edu/resources/",
                                                       "categories"))
 
         reader = SupertagReader()

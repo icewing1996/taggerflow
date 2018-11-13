@@ -23,7 +23,7 @@ class SupertagReader(object):
 
     def get_split(self, split_name, is_tritrain):
         return self.get_sentences(util.maybe_download("data",
-                                                       "http://appositive.cs.washington.edu/resources/",
+                                                       "http://lsz-gpu-01.cs.washington.edu/resources/",
                                                        split_name + ".stagged"), is_tritrain)
 
     def get_splits(self, read_tritrain=True):
