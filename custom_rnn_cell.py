@@ -1,5 +1,4 @@
 import tensorflow as tf
-from tensorflow.python.ops import rnn_cell_impl
 
 class DyerLSTMCell(tf.nn.rnn_cell.RNNCell):
   """LSTM recurrent network cell variant from https://github.com/clab/cnn.
@@ -28,9 +27,9 @@ class DyerLSTMCell(tf.nn.rnn_cell.RNNCell):
     with tf.variable_scope(scope or type(self).__name__):  # "DyerLSTMCell"
       h, c = tf.split(state, 2, 1)
 
-      input_gate = tf.sigmoid(rnn_cell_impl._linear([inputs, h, c], self._num_units, bias=True, bias_start=0.25, scope="input_gate"))
-      new_input = tf.tanh(rnn_cell_impl._linear([inputs, h], self._num_units, bias=True, scope="new_input"))
+      input_gate = tf.sigmoid(tf.layers.Dense([inputs, h, c], self._num_units))
+      new_input = tf.tanh(tf.layers.Dense([inputs, h], self._num_units))
       new_c = input_gate * new_input + (1.0 - input_gate) * c
-      output_gate = tf.sigmoid(rnn_cell_impl._linear([inputs, h, new_c], self._num_units, bias=True, scope="output_gate"))
+      output_gate = tf.sigmoid(tf.layers.Dense([inputs, h, new_c], self._num_units))
       new_h = tf.tanh(new_c) * output_gate
-    return new_h, tf.concat(1, [new_h, new_c])
+    return new_h, tf.concat([new_h, new_c], 1)

@@ -1,0 +1,25 @@
+Downloading http://lsz-gpu-01.cs.washington.edu/resources/categories...
+Succesfully downloaded http://lsz-gpu-01.cs.washington.edu/resources/categories (9052 bytes).
+Downloading http://lsz-gpu-01.cs.washington.edu/resources/train.stagged...
+Succesfully downloaded http://lsz-gpu-01.cs.washington.edu/resources/train.stagged (15608612 bytes).
+Downloading http://lsz-gpu-01.cs.washington.edu/resources/dev.stagged...
+Succesfully downloaded http://lsz-gpu-01.cs.washington.edu/resources/dev.stagged (759891 bytes).
+Downloading http://lsz-gpu-01.cs.washington.edu/resources/embeddings.raw...
+Succesfully downloaded http://lsz-gpu-01.cs.washington.edu/resources/embeddings.raw (221426048 bytes).
+Number of supertags: 425
+Number of words: 243656
+Number of prefix_1: 82
+Number of prefix_2: 944
+Number of prefix_3: 4347
+Number of prefix_4: 8106
+Number of suffix_1: 81
+Number of suffix_2: 826
+Number of suffix_3: 3080
+Number of suffix_4: 6375
+Train sentences: 39604
+Tri-train sentences: 0
+Dev sentences: 1913
+Massaging data into input format...
+Skipping sentence of length 116.
+Skipping sentence of length 113.
+Skipping sentence of length 251.

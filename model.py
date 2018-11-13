@@ -4,7 +4,6 @@ import tensorflow as tf
 
 import logging
 import features
-from tensorflow.python.ops import rnn_cell_impl
 
 from custom_rnn_cell import *
 
@@ -63,8 +62,10 @@ class SupertaggerModel(object):
         with tf.name_scope("softmax"):
             # From LSTM outputs to logits.
             flattened = self.flatten(outputs)
-            penultimate = tf.nn.relu(rnn_cell_impl._linear(flattened, self.penultimate_hidden_size, bias=True, scope="penultimate"))
-            logits = rnn_cell_impl._linear(penultimate, supertags_size, bias=True, scope="softmax")
+            penultimate = tf.nn.relu(tf.layers.Dense(inputs=flattened, units=self.penultimate_hidden_size))
+            logits = tf.layers.Dense(inputs=penultimate, units=supertag_size)
+            # penultimate = tf.nn.relu(rnn_cell_impl._linear(flattened, self.penultimate_hidden_size, bias=True, scope="penultimate"))
+            # logits = rnn_cell_impl._linear(penultimate, supertags_size, bias=True, scope="softmax")
 
         with tf.name_scope("prediction"):
             self.scores = self.unflatten(logits, name="scores")
