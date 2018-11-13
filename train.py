@@ -14,7 +14,7 @@ from config import *
 class SupertaggerTrainer(object):
     def __init__(self, logdir):
         self.logdir = logdir
-        self.writer = tf.train.SummaryWriter(logdir, flush_secs=20)
+        self.writer = tf.summary.FileWriter(logdir, flush_secs=20)
 
     def train(self, config, data, params):
         with tf.Session() as session, Timer("Training") as timer:
