@@ -42,8 +42,8 @@ class SupertaggerModel(object):
         with tf.name_scope("embeddings"):
             with tf.device("/cpu:0"):
                 embeddings_w = collections.OrderedDict((name, tf.get_variable(name, [space.size(), space.embedding_size])) for name, space in embedding_spaces.items())
-                embeddings = [tf.gather(e,i) for e,i in zip(embeddings_w.values(), tf.split(2, len(embedding_spaces), self.x))]
-            concat_embedding = tf.concat(3, embeddings)
+                embeddings = [tf.gather(e,i) for e,i in zip(embeddings_w.values(), tf.split(self.x, len(embedding_spaces), 2))]
+            concat_embedding = tf.concat(embeddings, 3)
             concat_embedding = tf.squeeze(concat_embedding, [2])
             if is_training:
                 concat_embedding = tf.nn.dropout(concat_embedding, 1.0 - config.dropout_probability)
