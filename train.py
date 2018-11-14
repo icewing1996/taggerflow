@@ -43,16 +43,14 @@ class SupertaggerTrainer(object):
                 i += 1
 
                 _, loss = session.run([train_model.optimize,
-                                       train_model.loss])
+                                       train_model.loss_sum])
                 train_loss += loss
                 if i % 100 == 0:
                     timer.tick("{} training steps".format(i))
 
-
                 if i >= (len(data.train_sentences) + len(data.tritrain_sentences))/data.batch_size:
                     train_loss = train_loss / i
-                    print(train_loss, type(train_loss))
-                    logging.info("Epoch {} complete(steps={}, loss={).".format(epoch, i, train_loss))
+                    logging.info("Epoch {} complete(steps={}, loss={:.3f}).".format(epoch, i, train_loss))
                     self.writer.add_summary(tf.Summary(value=[tf.Summary.Value(tag="Train Loss", simple_value=train_loss)]),
                                             tf.train.global_step(session, train_model.global_step))
                     i = 0

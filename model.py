@@ -87,6 +87,7 @@ class SupertaggerModel(object):
                                                              modified_weights,
                                                              average_across_timesteps=False, average_across_batch=False)
 
+                self.loss_sum = tf.reduce_sum(self.loss)
                 params = tf.trainable_variables()
 
             # Construct training operations.
