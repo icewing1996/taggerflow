@@ -49,26 +49,25 @@ class SupertaggerModel(object):
                 concat_embedding = tf.nn.dropout(concat_embedding, 1.0 - config.dropout_probability)
 
         with tf.name_scope("lstm"):
+            lstm = tf.contrib.cudnn_rnn.CudnnLSTM(self.num_layers, self.lstm_hidden_size, direction='bidirectional', dtype=tf.float32)
+            outputs, _ = lstm(concat_embedding)
             # LSTM cell is replicated across stacks and timesteps.
-            first_cell = DyerLSTMCell(self.lstm_hidden_size, concat_embedding.get_shape()[2].value)
-            if self.num_layers > 1:
-                stacked_cell = DyerLSTMCell(self.lstm_hidden_size, self.lstm_hidden_size)
-                cell = tf.nn.rnn_cell.MultiRNNCell([first_cell] + [stacked_cell] * (self.num_layers - 1))
-            else:
-                cell = first_cell
-
-            outputs, _ = tf.nn.bidirectional_dynamic_rnn(cell, cell, concat_embedding, sequence_length=self.num_tokens, dtype=tf.float32)
-            outputs = tf.concat(outputs, 2)
+            #first_cell = DyerLSTMCell(self.lstm_hidden_size, concat_embedding.get_shape()[2].value)
+            #if self.num_layers > 1:
+            #    stacked_cell = DyerLSTMCell(self.lstm_hidden_size, self.lstm_hidden_size)
+            #    cell = tf.nn.rnn_cell.MultiRNNCell([first_cell] + [stacked_cell] * (self.num_layers - 1))
+            #else:
+            #    cell = first_cell
+            # outputs, _ = tf.nn.bidirectional_dynamic_rnn(cell, cell, concat_embedding, sequence_length=self.num_tokens, dtype=tf.float32)
+            # outputs = tf.concat(outputs, 2)
         with tf.name_scope("softmax"):
             # From LSTM outputs to logits.
-            flattened = self.flatten(outputs)
-            penultimate = tf.nn.relu(tf.layers.Dense(inputs=flattened, units=self.penultimate_hidden_size))
-            logits = tf.layers.Dense(inputs=penultimate, units=supertag_size)
-            # penultimate = tf.nn.relu(rnn_cell_impl._linear(flattened, self.penultimate_hidden_size, bias=True, scope="penultimate"))
-            # logits = rnn_cell_impl._linear(penultimate, supertags_size, bias=True, scope="softmax")
-
+            # flattened = self.flatten(outputs)
+            penultimate = tf.layers.dense(outputs, self.penultimate_hidden_size, activation='relu')
+            logits = tf.layers.dense(penultimate, supertags_size)
+            
         with tf.name_scope("prediction"):
-            self.scores = self.unflatten(logits, name="scores")
+            self.scores = logits
 
         if is_training:
             with tf.name_scope("loss"):
@@ -83,10 +82,10 @@ class SupertaggerModel(object):
                 cross_entropy_list = [tf.reduce_sum(ce * w) for ce, w in zip(cross_entropy_list, modified_weights_list)]
                 self.loss = sum(cross_entropy_list)
                 """
-                self.loss = tf.nn.seq2seq.sequence_loss([logits],
-                                                        [self.flatten(self.y)],
-                                                        [self.flatten(modified_weights)],
-                                                        average_across_timesteps=False, average_across_batch=False)
+                self.loss = tf.contrib.seq2seq.sequence_loss(logits,
+                                                             self.y,
+                                                             modified_weights,
+                                                             average_across_timesteps=False, average_across_batch=False)
 
                 params = tf.trainable_variables()
 

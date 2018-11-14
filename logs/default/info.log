@@ -1,1 +1,23 @@
 Training duration was 0:00:00.
+Training duration was 0:00:00.
+Training duration was 0:00:00.
+Training duration was 0:00:00.
+Training duration was 0:00:00.
+Training duration was 0:00:00.
+Training duration was 0:00:00.
+Training duration was 0:00:00.
+Training duration was 0:00:00.
+Training duration was 0:00:03.
+Training duration was 0:00:04.
+Training duration was 0:00:04.
+Training duration was 0:00:03.
+Training duration was 0:00:04.
+Training duration was 0:00:03.
+Training duration was 0:00:03.
+Training duration was 0:00:03.
+Training duration was 0:00:03.
+Training duration was 0:00:04.
+From /Users/Jimmy/anaconda3/envs/taggerflow/lib/python2.7/site-packages/tensorflow/python/util/tf_should_use.py:189: initialize_all_variables (from tensorflow.python.ops.variables) is deprecated and will be removed after 2017-03-02.
+Instructions for updating:
+Use `tf.global_variables_initializer` instead.
+Training duration was 0:00:05.
